@@ -636,7 +636,7 @@ function App() {
                 className="profile-logout"
                 onClick={logout}
               >
-                계정 설정
+                로그아웃
               </button>
 
             </div>
