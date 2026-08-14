@@ -486,12 +486,14 @@ function enterStudentId(e) {
           <CouponScreen
             coupons={coupons}
             onUse={useCouponByStore}
+            onOpenScanner={openScannerDirectly}
           />
         )}
 
         {tab === "scan" && (
           <ScanScreen
             onOpenScanner={() =>
+              setTab("scan");
               setScannerOpen(true)
             }
             onDemoScan={handleScan}
@@ -513,17 +515,17 @@ function enterStudentId(e) {
         />
 
         <NavButton
-          active={tab === "coupons"}
-          onClick={() => setTab("coupons")}
-          icon={<Ticket size={22} />}
-          label="내 쿠폰함"
-        />
-
-        <NavButton
           active={tab === "scan"}
           onClick={() => setTab("scan")}
           icon={<QrCode size={22} />}
           label="QR 스캔"
+        />
+
+        \<NavButton
+          active={tab === "coupons"}
+          onClick={() => setTab("coupons")}
+          icon={<Ticket size={22} />}
+          label="내 쿠폰함"
         />
 
       </nav>
@@ -701,6 +703,7 @@ const center = [
 function CouponScreen({
   coupons,
   onUse,
+  onOpenScanner,
 }) {
 
   const active = coupons.filter(
@@ -792,7 +795,7 @@ function CouponScreen({
                 <button
                   className="coupon-use-btn"
                   onClick={() =>
-                    onUse(store)
+                    onOpenScanner()
                   }
                 >
 
