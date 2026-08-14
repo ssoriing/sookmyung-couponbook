@@ -170,7 +170,6 @@ function InlineQRScanner({ onScanSuccess }) {
           },
           () => {}
         );
-
       } catch (error) {
         console.error("QR 카메라 오류:", error);
 
@@ -209,7 +208,6 @@ function InlineQRScanner({ onScanSuccess }) {
     };
   }, [onScanSuccess]);
 
-
   return (
     <div
       className="inline-scanner"
@@ -217,8 +215,6 @@ function InlineQRScanner({ onScanSuccess }) {
         width: "100%",
       }}
     >
-
-      {/* 카메라가 이곳에 바로 표시됨 */}
       <div
         id={readerId}
         style={{
@@ -238,7 +234,6 @@ function InlineQRScanner({ onScanSuccess }) {
       >
         QR 코드를 화면 중앙에 맞춰주세요.
       </p>
-
     </div>
   );
 }
@@ -249,7 +244,6 @@ function InlineQRScanner({ onScanSuccess }) {
 // =========================
 
 function App() {
-
   const [studentId, setStudentId] = useState(
     localStorage.getItem("sookmyung-student-id") || ""
   );
@@ -290,7 +284,6 @@ function App() {
   // =========================
 
   useEffect(() => {
-
     const overlayOpen =
       Boolean(selectedStore) ||
       Boolean(scanResult);
@@ -307,7 +300,6 @@ function App() {
       document.body.style.overflow = "";
       document.documentElement.style.overflow = "";
     };
-
   }, [selectedStore, scanResult]);
 
 
@@ -387,7 +379,6 @@ function App() {
   // =========================
 
   function useCouponByStore(store) {
-
     const coupon = coupons.find(
       (c) =>
         c.storeId === store.id &&
@@ -408,7 +399,6 @@ function App() {
   // =========================
 
   function confirmUse() {
-
     if (!scanResult) {
       return;
     }
@@ -441,19 +431,16 @@ function App() {
   // =========================
 
   function handleScan(code) {
-
     const store = STORES.find(
       (s) =>
         s.qrCode.toLowerCase() ===
         code.trim().toLowerCase()
     );
 
-
     if (!store) {
       alert("등록되지 않은 매장 QR입니다.");
       return;
     }
-
 
     const coupon = coupons.find(
       (c) =>
@@ -461,14 +448,12 @@ function App() {
         !c.used
     );
 
-
     if (!coupon) {
       alert(
         "이 매장의 사용 가능한 쿠폰이 없습니다."
       );
       return;
     }
-
 
     setScanResult({
       store,
@@ -483,7 +468,6 @@ function App() {
   // =========================
 
   if (!studentId) {
-
     return (
       <div className="login-page">
 
@@ -509,7 +493,6 @@ function App() {
             간편하게 확인하고 사용하세요.
           </p>
 
-
           <form onSubmit={enterStudentId}>
 
             <label htmlFor="studentName">
@@ -526,7 +509,6 @@ function App() {
               }
             />
 
-
             <label htmlFor="studentId">
               학번
             </label>
@@ -541,7 +523,6 @@ function App() {
               }
             />
 
-
             <button
               className="primary-btn"
               type="submit"
@@ -551,7 +532,6 @@ function App() {
             </button>
 
           </form>
-
 
           <p className="privacy-note">
             입력한 이름과 학번은 이 기기에서
@@ -572,117 +552,137 @@ function App() {
   return (
     <div className="app-shell">
 
-      {/* 상단 */}
+      {/* =========================
+          상단 헤더
+      ========================= */}
 
-      <header className="topbar">
+<header className="topbar">
 
-        <div>
+  {/* 상단 광고 배너 */}
+  <button
+    className="header-ad"
+    onClick={() => {
+      const store = STORES.find(
+        (s) => s.id === "bonsole"
+      );
 
-          <p className="eyebrow">
-            SOOKMYUNG UNIVERSITY
-          </p>
+      if (store) {
+        setSelectedStore(store);
+      }
+    }}
+  >
+    <div className="header-ad-badge">
+      AD
+    </div>
 
-          <h1>
-            숙명여대 쿠폰북
-          </h1>
+    <div className="header-ad-content">
+
+      <p className="header-ad-label">
+        오늘의 추천 매장
+      </p>
+
+      <h3>
+        본솔커피
+      </h3>
+
+      <p className="header-ad-text">
+        아메리카노 사이즈업
+      </p>
+
+    </div>
+
+    <div className="header-ad-icon">
+      ☕
+    </div>
+
+    <div className="header-ad-arrow">
+      <ChevronRight size={20} />
+    </div>
+  </button>
+
+
+  {/* 계정 */}
+  <div className="user-area">
+
+    <button
+      className="profile-avatar"
+      onClick={() =>
+        setProfileOpen((prev) => !prev)
+      }
+      aria-label="내 정보"
+    >
+      <UserRound size={19} />
+    </button>
+
+    {profileOpen && (
+      <div className="profile-popover">
+
+        <div className="profile-popover-header">
+
+          <div className="profile-popover-avatar">
+            <UserRound size={20} />
+          </div>
+
+          <div>
+            <strong>
+              {studentName}
+            </strong>
+
+            <span>
+              {studentId}
+            </span>
+          </div>
 
         </div>
 
+        <div className="profile-divider" />
 
-        {/* 사용자 정보 */}
+        <button
+          className="profile-logout"
+          onClick={logout}
+        >
+          로그아웃
+        </button>
 
-        <div className="user-area">
+      </div>
+    )}
 
-          <button
-            className="profile-avatar"
-            onClick={() =>
-              setProfileOpen((prev) => !prev)
-            }
-            aria-label="내 정보"
-          >
-            <UserRound size={19} />
-          </button>
+  </div>
 
-
-          {profileOpen && (
-
-            <div className="profile-popover">
-
-              <div className="profile-popover-header">
-
-                <div className="profile-popover-avatar">
-                  <UserRound size={20} />
-                </div>
-
-                <div>
-
-                  <strong>
-                    {studentName}
-                  </strong>
-
-                  <span>
-                    {studentId}
-                  </span>
-
-                </div>
-
-              </div>
+</header>
 
 
-              <div className="profile-divider" />
-
-
-              <button
-                className="profile-logout"
-                onClick={logout}
-              >
-                로그아웃
-              </button>
-
-            </div>
-
-          )}
-
-        </div>
-
-      </header>
-
-
-      {/* 콘텐츠 */}
+      {/* =========================
+          콘텐츠
+      ========================= */}
 
       <main className="content">
 
         {tab === "map" && (
-
           <MapScreen
             onStoreClick={setSelectedStore}
           />
-
         )}
 
-
         {tab === "scan" && (
-
           <ScanScreen
             onScan={handleScan}
           />
-
         )}
 
-
         {tab === "coupons" && (
-
           <CouponScreen
             coupons={coupons}
             onUse={useCouponByStore}
           />
-
         )}
 
       </main>
 
 
-      {/* 하단 메뉴 */}
+      {/* =========================
+          하단 메뉴
+      ========================= */}
 
       <nav className="bottom-nav">
 
@@ -695,7 +695,6 @@ function App() {
           label="지도"
         />
 
-
         <NavButton
           active={tab === "scan"}
           onClick={() => {
@@ -704,7 +703,6 @@ function App() {
           icon={<QrCode size={22} />}
           label="QR 스캔"
         />
-
 
         <NavButton
           active={tab === "coupons"}
@@ -718,7 +716,9 @@ function App() {
       </nav>
 
 
-      {/* 매장 모달 */}
+      {/* =========================
+          매장 모달
+      ========================= */}
 
       {selectedStore && (
 
@@ -743,7 +743,9 @@ function App() {
       )}
 
 
-      {/* 쿠폰 확인 모달 */}
+      {/* =========================
+          쿠폰 확인 모달
+      ========================= */}
 
       {scanResult && (
 
@@ -774,16 +776,13 @@ function NavButton({
   icon,
   label,
 }) {
-
   return (
-
     <button
       className={`nav-item ${
         active ? "active" : ""
       }`}
       onClick={onClick}
     >
-
       {icon}
 
       <span>
@@ -791,7 +790,6 @@ function NavButton({
       </span>
 
     </button>
-
   );
 }
 
@@ -814,9 +812,7 @@ function MapScreen({ onStoreClick }) {
     ) / STORES.length,
   ];
 
-
   return (
-
     <section>
 
       <div className="section-heading">
@@ -832,7 +828,6 @@ function MapScreen({ onStoreClick }) {
           </h2>
 
         </div>
-
 
         <span className="count-badge">
           {STORES.length}곳
@@ -860,7 +855,6 @@ function MapScreen({ onStoreClick }) {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
 
-
           {STORES.map((store) => (
 
             <Marker
@@ -880,7 +874,6 @@ function MapScreen({ onStoreClick }) {
         </MapContainer>
 
       </div>
-
 
       <p className="map-help">
         마커를 눌러 매장 혜택을 확인해보세요.
@@ -904,9 +897,7 @@ function CouponScreen({
     (c) => !c.used
   );
 
-
   return (
-
     <section>
 
       <div className="section-heading">
@@ -922,7 +913,6 @@ function CouponScreen({
           </h2>
 
         </div>
-
 
         <span className="count-badge">
           {active.length}장
@@ -957,7 +947,6 @@ function CouponScreen({
               (s) =>
                 s.id === coupon.storeId
             );
-
 
             return (
 
@@ -1026,7 +1015,6 @@ function ScanScreen({ onScan }) {
 
   const [code, setCode] = useState("");
 
-
   return (
 
     <section className="scan-page">
@@ -1048,29 +1036,27 @@ function ScanScreen({ onScan }) {
       </div>
 
 
-      {/* =========================
-          카메라 영역
-      ========================= */}
+      {/* 카메라 */}
 
       <div className="scan-card">
 
         <InlineQRScanner
           onScanSuccess={(decodedText) => {
+
             console.log(
               "QR 인식:",
               decodedText
             );
 
             onScan(decodedText);
+
           }}
         />
 
       </div>
 
 
-      {/* =========================
-          매장 코드 직접 입력
-      ========================= */}
+      {/* 매장 코드 직접 입력 */}
 
       <div className="fallback-card">
 
@@ -1083,7 +1069,6 @@ function ScanScreen({ onScan }) {
           매장 코드를 입력해주세요.
         </p>
 
-
         <div className="code-row">
 
           <input
@@ -1093,7 +1078,6 @@ function ScanScreen({ onScan }) {
             }
             placeholder="매장 코드를 입력해주세요"
           />
-
 
           <button
             onClick={() => {
@@ -1155,21 +1139,17 @@ function StoreModal({
           <X size={20} />
         </button>
 
-
         <div className="store-icon large">
           <MapPin size={24} />
         </div>
-
 
         <p className="eyebrow">
           PARTNER STORE
         </p>
 
-
         <h2>
           {store.name}
         </h2>
-
 
         <div className="benefit-box">
 
@@ -1182,7 +1162,6 @@ function StoreModal({
           </strong>
 
         </div>
-
 
         <button
           className="primary-btn wide"
@@ -1233,16 +1212,13 @@ function ConfirmModal({
             <Check size={34} />
           </div>
 
-
           <p className="eyebrow">
             COUPON USED
           </p>
 
-
           <h2>
             쿠폰 사용 완료!
           </h2>
-
 
           <p>
             {result.store.name}의
@@ -1254,7 +1230,6 @@ function ConfirmModal({
 
             혜택이 사용 처리되었습니다.
           </p>
-
 
           <button
             className="primary-btn wide"
@@ -1291,23 +1266,19 @@ function ConfirmModal({
           <X size={20} />
         </button>
 
-
         <div className="store-icon large">
           <Ticket size={24} />
         </div>
 
-
         <p className="eyebrow">
           COUPON CONFIRM
         </p>
-
 
         <h2>
           이 쿠폰을
           <br />
           사용하시겠습니까?
         </h2>
-
 
         <div className="benefit-box">
 
@@ -1321,7 +1292,6 @@ function ConfirmModal({
 
         </div>
 
-
         <div className="modal-actions">
 
           <button
@@ -1330,7 +1300,6 @@ function ConfirmModal({
           >
             아니요
           </button>
-
 
           <button
             className="primary-btn"
