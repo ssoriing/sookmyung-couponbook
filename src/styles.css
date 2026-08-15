@@ -848,7 +848,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  color: #ff00dd;
+  color: #000000;
   font-size: 12px;
   font-weight: 600;
   padding: 0 !important;
