@@ -15,6 +15,7 @@ import {
   MapContainer,
   TileLayer,
   Marker,
+  Tooltip,
 } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
@@ -856,7 +857,6 @@ function MapScreen({ onStoreClick }) {
           />
 
           {STORES.map((store) => (
-
             <Marker
               key={store.id}
               position={[
@@ -864,11 +864,18 @@ function MapScreen({ onStoreClick }) {
                 store.lng,
               ]}
               eventHandlers={{
-                click: () =>
-                  onStoreClick(store),
+                click: () => onStoreClick(store),
               }}
-            />
-
+            >
+              <Tooltip
+                permanent
+                direction="top"
+                offset={[-15, -5]}
+                className="store-name"
+              >
+                {store.name}
+              </Tooltip>
+            </Marker>
           ))}
 
         </MapContainer>
